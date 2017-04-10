@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="jquery/jquery.mobile-1.4.5.min.css">
+	<script type="text/javascript" src="jquery/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="jquery/jquery.mobile-1.4.5.min.js"></script>
+</head>
+<body>
+	<div data-role="page" id="menu">
+		<div data-role="header">
+		  <h1>Cosmic Escape</h1>
+		</div>
+		<div data-role="main" class="ui-content">
+			<a href="#game" class="ui-btn">Start</a>
+			<button onclick="navigator.app.exitApp()">Quit</button>
+		</div>
+		<div data-role="footer">
+		  <h1>Lukáš Kotržena - KOT0200</h1>
+		</div>
+	</div>
+	<div data-role="page" id="game">
+		<canvas></canvas>
+	</div>
+</body>
+</html>
