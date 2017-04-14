@@ -8,4 +8,4 @@ class Entity {
 	draw(ctx){
 		ctx.drawImage(this.texture, this.x, this.y);
 	}
-}
+};
