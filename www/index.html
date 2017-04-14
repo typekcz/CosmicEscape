@@ -9,6 +9,7 @@
 	<script type="text/javascript" src="js/jquery/jquery.mobile-1.4.5.min.js"></script>
 	<script type="text/javascript" src="js/game.js"></script>
 	<script type="text/javascript" src="js/entity.js"></script>
+	<script type="text/javascript" src="js/assets.js"></script>
 </head>
 <body>
 	<div data-role="page" id="menu">
@@ -26,8 +27,17 @@
 	<div data-role="page" id="game">
 		<canvas></canvas>
 		<script type="text/javascript">
+			Assets.addImage("img/playerShip1_blue.png");
+		
 			var game = new Game(document.querySelector("#game canvas"));
+			
+			game.update();
 			game.draw();
+			
+			setInterval(function(){
+				game.update();
+				game.draw();
+			}, 1000/60);
 		</script>
 	</div>
 </body>
