@@ -9,7 +9,7 @@
 	<script type="text/javascript" src="js/jquery/jquery.mobile-1.4.5.min.js"></script>
 	<script type="text/javascript" src="js/game.js"></script>
 	<script type="text/javascript" src="js/entity.js"></script>
-	<script type="text/javascript" src="js/assets.js"></script>
+	<script type="text/javascript" src="js/assets.js"></script>s
 </head>
 <body>
 	<div data-role="page" id="menu">
@@ -28,8 +28,47 @@
 		<canvas></canvas>
 		<script type="text/javascript">
 			Assets.addImage("img/playerShip1_blue.png");
-		
+			Assets.addImage("img/Enemies/enemyBlack1.png");
+			Assets.addImage("img/Lasers/laserBlue01.png");
+		</script>
+		<script type="text/javascript" src="js/entityPresets.js"></script>
+		<script type="text/javascript">
 			var game = new Game(document.querySelector("#game canvas"));
+			Entity.prototype.game = game;
+			
+			window.onkeydown = function(event){
+				switch(event.keyCode){
+					case 87: // Up
+						game.controls.up = true;
+						break;
+					case 83: // Down
+						game.controls.down = true;
+						break;
+					case 65: // Left
+						game.controls.left = true;
+						break;
+					case 68: // Right
+						game.controls.right = true;
+						break;
+				}
+			}
+			
+			window.onkeyup = function(event){
+				switch(event.keyCode){
+					case 87: // Up
+						game.controls.up = false;
+						break;
+					case 83: // Down
+						game.controls.down = false;
+						break;
+					case 65: // Left
+						game.controls.left = false;
+						break;
+					case 68: // Right
+						game.controls.right = false;
+						break;
+				}
+			}
 			
 			game.update();
 			game.draw();
