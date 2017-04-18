@@ -10,6 +10,8 @@ class Entity {
 		this.y = y;
 		this.destroy = false;
 		this.movingDirection = {x: 0, y: 0};
+		if(typeof(this.cooldown) != "undefined")
+			this.currentCooldown = this.cooldown;
 	}
 	
 	draw(ctx){
@@ -17,7 +19,16 @@ class Entity {
 	}
 	
 	update(){
-		this.move(this.movingDirection.x, this.movingDirection.y);
+		if(typeof(this.moveFunction) != "undefined")
+			this.moveFunction();
+		else
+			this.move(this.movingDirection.x, this.movingDirection.y);
+			
+		this.currentCooldown--;
+			
+		if(this.enemy){
+			this.shoot();
+		}
 	}
 	
 	collision(entity){
@@ -30,14 +41,18 @@ class Entity {
 	}
 	
 	shoot(){
-		for(var i = 0; i < this.shotDirections.length; i++){
-			var shot = new Entity(this.shotPrototype, this.x, this.y);
-			shot.movingDirection = {x: this.shotDirections[i].x, y: this.shotDirections[i].y};
-			console.log(shot);
-			if(this.enemy)
-				this.game.entities.enemyShots.push(shot);
-			else
-				this.game.entities.playerShots.push(shot);
+		if(this.currentCooldown <= 0){
+			for(var i = 0; i < this.shotOrigins.length; i++){
+				var shot = new Entity(this.shotPrototype, this.x + this.shotOrigins[i].position.x, this.y + this.shotOrigins[i].position.y);
+				shot.movingDirection = {x: this.shotOrigins[i].direction.x, y: this.shotOrigins[i].direction.y};
+
+				if(this.enemy)
+					this.game.entities.enemyShots.push(shot);
+				else
+					this.game.entities.playerShots.push(shot);
+			}
+			this.currentCooldown = this.cooldown;
 		}
 	}
 };
+

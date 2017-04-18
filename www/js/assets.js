@@ -11,3 +11,16 @@ var Assets = {
 		this.images[path] = img;
 	}
 }
+
+Assets.addImage("img/playerShip1_blue.png");
+
+Assets.addImage("img/Enemies/enemyBlack1.png");
+Assets.addImage("img/Enemies/enemyBlack4.png");
+
+Assets.addImage("img/Lasers/laserBlue01.png");
+Assets.addImage("img/Lasers/laserRed08.png");
+Assets.addImage("img/Lasers/laserRed10.png");
+
+Assets.addImage("img/Damage/playerShip1_damage1.png");
+Assets.addImage("img/Damage/playerShip1_damage2.png");
+Assets.addImage("img/Damage/playerShip1_damage3.png");

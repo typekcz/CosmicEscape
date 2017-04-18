@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-    <title></title>
+    <title>Cosmic Escape</title>
     <meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
@@ -9,7 +9,6 @@
 	<script type="text/javascript" src="js/jquery/jquery.mobile-1.4.5.min.js"></script>
 	<script type="text/javascript" src="js/game.js"></script>
 	<script type="text/javascript" src="js/entity.js"></script>
-	<script type="text/javascript" src="js/assets.js"></script>s
 </head>
 <body>
 	<div data-role="page" id="menu">
@@ -26,11 +25,7 @@
 	</div>
 	<div data-role="page" id="game">
 		<canvas></canvas>
-		<script type="text/javascript">
-			Assets.addImage("img/playerShip1_blue.png");
-			Assets.addImage("img/Enemies/enemyBlack1.png");
-			Assets.addImage("img/Lasers/laserBlue01.png");
-		</script>
+		<script type="text/javascript" src="js/assets.js"></script>
 		<script type="text/javascript" src="js/entityPresets.js"></script>
 		<script type="text/javascript">
 			var game = new Game(document.querySelector("#game canvas"));
@@ -50,6 +45,9 @@
 					case 68: // Right
 						game.controls.right = true;
 						break;
+					case 32: // Space
+						game.controls.shoot = true;
+						break;
 				}
 			}
 			
@@ -67,16 +65,21 @@
 					case 68: // Right
 						game.controls.right = false;
 						break;
+					case 32: // Space
+						game.controls.shoot = false;
+						break;
 				}
 			}
 			
 			game.update();
 			game.draw();
 			
+			var pause = false;
 			setInterval(function(){
+				if(pause) return;
 				game.update();
 				game.draw();
-			}, 1000/60);
+			}, 1000/30);
 		</script>
 	</div>
 </body>

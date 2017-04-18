@@ -6,22 +6,29 @@ class Game {
 		this.resize();
 		this.generateBg();
 		this.entities = {
-			enemies: [],
 			enemyShots: [],
-			playerShots: []
+			playerShots: [],
+			enemies: []
 		};
 		
 		this.controls = {
 			left: false,
 			right: false,
 			up: false,
-			down: false
+			down: false,
+			shoot: false
 		};
 		
-		this.playerShip = new Entity(EntityPresets.playerShip1_blue, 500, -500);
-		//this.entities.push(this.playerShip);
+		this.playerShip = new Entity(EntityPresets.playerShip1_blue, 500, -200);
+		this.playerShip.hp = 4;
+		this.playerShip.draw = function(ctx){
+			ctx.drawImage(this.texture, this.x - this.texture.width/2, this.y - this.texture.height/2);
+			if(this.hp < 4 && this.hp > 0){
+				ctx.drawImage(this.damageTextures[3-this.hp], this.x - this.damageTextures[3-this.hp].width/2, this.y - this.damageTextures[3-this.hp].height/2);
+			}
+		}
 		
-		this.entities.enemies.push(new Entity(EntityPresets.enemyBlack1, 500, -1500));
+		this.entities.enemies.push(new Entity(EntityPresets.enemyBlack4, 500, -1500));
 		this.entities.enemies[0].movingDirection.y = 2;
 	}
 	
@@ -75,12 +82,12 @@ class Game {
 		this.context.scale(this.scale, this.scale);
 		
 		// Entities
-		this.playerShip.draw(this.context);
 		for(var e in this.entities){
 			for(var i = 0; i < this.entities[e].length; i++){
 				this.entities[e][i].draw(this.context);
 			}
 		}
+		this.playerShip.draw(this.context);
 		
 		this.context.restore();
 	}
@@ -103,6 +110,8 @@ class Game {
 			this.playerShip.move(0, -1);
 		if(this.controls.down)
 			this.playerShip.move(0, 1);
+		if(this.controls.shoot)
+			this.playerShip.shoot();
 				
 		// Entities update
 		this.playerShip.update();
@@ -123,15 +132,20 @@ class Game {
 			if(this.playerShip.collision(this.entities.enemies[i]))
 				console.log("collision");
 			// Player shots - Enemies
-			for(var j = 0; j < this.entities.playerShots; j++){
-				if(this.entities.playerShots[j].collision(this.entities.enemies[i]))
-					console.log("collision");
+			for(var j = 0; j < this.entities.playerShots.length; j++){
+				if(this.entities.playerShots[j].collision(this.entities.enemies[i])){
+					this.entities.enemies[i].destroy = true;
+					this.entities.playerShots[j].destroy = true;
+				}
 			}
 		}
 		// Player - Enemy shots
-		for(var i = 0; i < this.entities.enemyShots[i]; i++){
-			if(this.playerShip.collision(this.entities.enemyShots[i]))
-				console.log("collision");
+		for(var i = 0; i < this.entities.enemyShots.length; i++){
+			if(this.playerShip.collision(this.entities.enemyShots[i])){
+				this.entities.enemyShots[i].destroy = true;
+				if(this.playerShip > 0)
+					this.playerShip.hp--;
+			}
 		}
 	}
 }
