@@ -1,3 +1,11 @@
+function rotateVec(vec, angle){
+	var rotatedVec = {};
+	
+	rotatedVec.x = vec.x * Math.cos(angle) - vec.y * Math.sin(angle);
+	rotatedVec.y = vec.x * Math.sin(angle) + vec.y * Math.cos(angle);
+	
+	return rotatedVec;
+}
 
 class Game {
 	constructor(canvas){
@@ -28,8 +36,10 @@ class Game {
 			}
 		}
 		
-		this.entities.enemies.push(new Entity(EntityPresets.enemyBlack4, 500, -1500));
-		this.entities.enemies[0].movingDirection.y = 2;
+		//this.entities.enemies.push(new Entity(EntityPresets.enemyBlack3, 500, -1500));
+		//this.entities.enemies.push(new Meteor(EntityPresets.meteorBrown_big1, 500, -1500));
+		//this.entities.enemies.push(new Entity(EntityPresets.enemyBlack2, 500, -1500));
+		//this.entities.enemies[0].movingDirection.y = 2;
 	}
 	
 	resize(){
@@ -119,7 +129,7 @@ class Game {
 			var entities = this.entities[e];
 			for(var i = 0; i < entities.length; i++){
 				entities[i].update();
-				if(entities[i].destroy || entities[i].x < -100 || entities[i].x > 1100 || entities[i].y > 100){
+				if(entities[i].destroy || entities[i].x < -100 || entities[i].x > 1100 || entities[i].y > 100 || entities[i].y < -2500){
 					entities.splice(i, 1);
 					i--;
 				}
@@ -129,13 +139,22 @@ class Game {
 		// Collision
 		// Player - Enemies
 		for(var i = 0; i < this.entities.enemies.length; i++){
-			if(this.playerShip.collision(this.entities.enemies[i]))
-				console.log("collision");
+			if(this.playerShip.collision(this.entities.enemies[i])){
+				if(this.playerShip.hp > 0)
+					this.playerShip.hp--;
+				this.entities.enemies[i].destroy = true;
+					if(this.entities.enemies[i].onDestroy)
+						this.entities.enemies[i].onDestroy();
+			}
 			// Player shots - Enemies
 			for(var j = 0; j < this.entities.playerShots.length; j++){
 				if(this.entities.playerShots[j].collision(this.entities.enemies[i])){
 					this.entities.enemies[i].destroy = true;
+					if(this.entities.enemies[i].onDestroy)
+						this.entities.enemies[i].onDestroy();
 					this.entities.playerShots[j].destroy = true;
+					if(this.entities.playerShots[j].onDestroy)
+						this.entities.playerShots[j].onDestroy();
 				}
 			}
 		}
@@ -143,7 +162,9 @@ class Game {
 		for(var i = 0; i < this.entities.enemyShots.length; i++){
 			if(this.playerShip.collision(this.entities.enemyShots[i])){
 				this.entities.enemyShots[i].destroy = true;
-				if(this.playerShip > 0)
+				if(this.entities.enemyShots[i].onDestroy)
+					this.entities.enemyShots[i].onDestroy();
+				if(this.playerShip.hp > 0)
 					this.playerShip.hp--;
 			}
 		}
