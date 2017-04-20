@@ -1,7 +1,13 @@
 var EnemySpawner = {
+	slidingFleet1: function(game){
+		for(var i = 0; i < 5; i++){
+			var e = new Entity(EntityPresets.enemyBlack1, 500+i*100, -1500-i*100);
+			game.entities.enemies.push(e);
+		}
+	},
 	circlingFleet1: function(game){
 		for(var i = 0; i < 5; i++){
-			var e = new Entity(EntityPresets.enemyBlack3, 300+i*100, -1500-i*100);
+			var e = new Entity(EntityPresets.enemyBlack3, 500+i*100, -1500-i*100);
 			e.movingDirection.y = 1;
 			game.entities.enemies.push(e);
 		}

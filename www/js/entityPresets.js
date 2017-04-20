@@ -8,7 +8,7 @@ var EntityPresets = {
 	playerShip1_blue: {
 		__proto__: Entity.prototype,
 		enemy: false,
-		speed: 8,
+		speed: 12,
 		cooldown: 10,
 		texture: Assets.images["img/playerShip1_blue.png"],
 		damageTextures: [
@@ -45,7 +45,7 @@ var EntityPresets = {
 		}],
 		shotPrototype: {
 			__proto__: Entity.prototype,
-			speed: 15,
+			speed: 10,
 			texture: Assets.images["img/Lasers/laserRed10.png"],
 			radiusSquared: 100
 		},
@@ -53,7 +53,8 @@ var EntityPresets = {
 		moveFunction: function(){
 			if(typeof(this.movingFunctionDirection) == "undefined")
 				this.movingFunctionDirection = -1;
-			this.move(this.movingFunctionDirection, 0.5);
+			this.movingDirection = {x: this.movingFunctionDirection, y: 0.5}
+			//this.move(this.movingFunctionDirection, 0.5);
 			if(this.x*this.x <= this.radiusSquared)
 				this.movingFunctionDirection = 1;
 			if((this.x-1000)*(this.x-1000) <= this.radiusSquared)
@@ -80,7 +81,7 @@ var EntityPresets = {
 				if(typeof(this.movingFunctionDirection) == "undefined")
 					this.movingFunctionDirection = -1;
 				this.movingDirection = rotateVec(this.movingDirection, 0.1*this.movingFunctionDirection);
-				this.move(this.movingDirection.x, this.movingDirection.y);
+				//this.move(this.movingDirection.x, this.movingDirection.y);
 				if(this.movingDirection.x < -0.5)
 					this.movingFunctionDirection = -1;
 				if(this.movingDirection.x > 0.5)
@@ -91,7 +92,8 @@ var EntityPresets = {
 		moveFunction: function(){
 			if(typeof(this.movingFunctionDirection) == "undefined")
 				this.movingFunctionDirection = -1;
-			this.move(this.movingFunctionDirection, 0.5);
+			this.movingDirection = {x: this.movingFunctionDirection, y: 0.5};
+			//this.move(this.movingFunctionDirection, 0.5);
 			if(this.x*this.x <= this.radiusSquared)
 				this.movingFunctionDirection = 1;
 			if((this.x-1000)*(this.x-1000) <= this.radiusSquared)
@@ -110,11 +112,11 @@ var EntityPresets = {
 		}],
 		shotPrototype: {
 			__proto__: Entity.prototype,
-			speed: 20,
+			speed: 15,
 			texture: Assets.images["img/Lasers/laserRed10.png"],
 			radiusSquared: 100
 		},
-		cooldown: 20,
+		cooldown: 8,
 		moveFunction: function(){
 			if(typeof(this.movingFunctionDirection) == "undefined")
 				this.movingFunctionDirection = 1;
@@ -122,12 +124,18 @@ var EntityPresets = {
 				this.movingFunctionAngle = Math.PI/2;
 			var vec = {x: 1.5, y: 0};
 			vec = rotateVec(vec, this.movingFunctionAngle);
-			this.move(vec.x, vec.y + 0.5);
+			//this.move(vec.x, vec.y + 0.5);
+			this.movingDirection = {x: vec.x, y: vec.y + 0.5};
 			this.angle = this.movingFunctionAngle-Math.PI/2;
 			
-			this.movingFunctionAngle += 0.04 * this.movingFunctionDirection;
+			this.movingFunctionAngle += 0.06 * this.movingFunctionDirection;
 			if(this.movingFunctionAngle >= 2*Math.PI)
 				this.movingFunctionAngle -= 2*Math.PI;
+			if(this.movingFunctionAngle < 0)
+				this.movingFunctionAngle += 2*Math.PI;
+		},
+		shootFunction: function(){
+			return (this.movingFunctionAngle < Math.PI);
 		}
 	},
 	enemyBlack4: {
@@ -170,7 +178,8 @@ var EntityPresets = {
 		moveFunction: function(){
 			if(typeof(this.movingFunctionDirection) == "undefined")
 				this.movingFunctionDirection = -1;
-			this.move(this.movingFunctionDirection, 0.5);
+			//this.move(this.movingFunctionDirection, 0.5);
+			this.movingDirection = {x: this.movingFunctionDirection, y: 0.5};
 			if(this.x*this.x <= this.radiusSquared)
 				this.movingFunctionDirection = 1;
 			if((this.x-1000)*(this.x-1000) <= this.radiusSquared)

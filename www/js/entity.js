@@ -14,6 +14,8 @@ class Entity {
 			this.rotatingSpeed = 0;
 		if(typeof(this.moveFunction) == "undefined")
 			this.moveFunction = null;
+		if(typeof(this.shootFunction) == "undefined")
+			this.shootFunction = null;
 		if(typeof(this.onDestroy) == "undefined")
 			this.onDestroy = null;
 		this.movingDirection = {x: 0, y: 0};
@@ -36,8 +38,7 @@ class Entity {
 	update(){
 		if(this.moveFunction)
 			this.moveFunction();
-		else
-			this.move(this.movingDirection.x, this.movingDirection.y);
+		this.move(this.movingDirection.x, this.movingDirection.y);
 			
 		this.angle += this.rotatingSpeed;
 		if(this.angle >= 2*Math.PI)
@@ -45,7 +46,7 @@ class Entity {
 			
 		this.currentCooldown--;
 			
-		if(this.enemy){
+		if(this.enemy && (!this.shootFunction || this.shootFunction())){
 			this.shoot();
 		}
 	}
@@ -65,10 +66,13 @@ class Entity {
 		if(this.currentCooldown <= 0){
 			for(var i = 0; i < this.shotOrigins.length; i++){
 				var shot = new Entity(this.shotPrototype, this.x + this.shotOrigins[i].position.x, this.y + this.shotOrigins[i].position.y);
-				shot.movingDirection = rotateVec({
-					x: this.movingDirection.x + this.shotOrigins[i].direction.x, 
-					y: this.movingDirection.y + this.shotOrigins[i].direction.y
+				var movingVec = rotateVec({
+					x: this.shotOrigins[i].direction.x, 
+					y: this.shotOrigins[i].direction.y
 				}, this.angle);
+				movingVec.x += this.movingDirection.x*this.speed/shot.speed;
+				movingVec.y += this.movingDirection.y*this.speed/shot.speed;
+				shot.movingDirection = movingVec;
 
 				if(this.enemy)
 					this.game.entities.enemyShots.push(shot);
