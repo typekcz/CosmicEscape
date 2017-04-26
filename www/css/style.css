@@ -2,3 +2,59 @@
     height: 100%;
 	overflow: hidden;
 }
+
+.ui-dialog-background {
+	opacity: 0.5;
+	display: block !important;
+	-webkit-transition: opacity 0.5s ease-in;
+}
+
+.ui-dialog-background.pop.in {
+	opacity: 1;
+	-webkit-transition: opacity 0.5s ease-in;
+}
+
+.ui-dialog {
+	min-height: 100% !important;
+	background: transparent !important;
+	color: #f3f3f3;
+    text-shadow: 0 1px 0 #333;
+}
+
+.touchslider {
+	overflow: hidden;
+}
+
+.touchslider .item {
+	width: calc(100vw - 47px);
+	text-align: center;
+	height: 150px;
+	padding-top: 30px;
+}
+
+.btn-color {
+	display: inline-block !important;
+	width: 50px !important;
+	height: 50px !important;
+}
+
+.touchslider .item .blue, .touchslider .item .green, .touchslider .item .orange, .touchslider .item .red {
+	display: none;
+}
+
+.blue .blue {
+	display: inline-block !important;
+}
+
+.green .green {
+	display: inline-block !important;
+}
+
+.orange .orange {
+	display: inline-block !important;
+}
+
+.red .red {
+	display: inline-block !important;
+}
+

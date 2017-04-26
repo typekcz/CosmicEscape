@@ -12,12 +12,11 @@ var Assets = {
 	}
 }
 
-Assets.addImage("img/playerShip1_blue.png");
-
 Assets.addImage("img/Enemies/enemyBlack1.png");
 Assets.addImage("img/Enemies/enemyBlack2.png");
 Assets.addImage("img/Enemies/enemyBlack3.png");
 Assets.addImage("img/Enemies/enemyBlack4.png");
+Assets.addImage("img/Enemies/enemyBlack5.png");
 
 Assets.addImage("img/Meteors/meteorBrown_big1.png");
 Assets.addImage("img/Meteors/meteorBrown_med1.png");
@@ -25,6 +24,7 @@ Assets.addImage("img/Meteors/meteorBrown_med3.png");
 
 Assets.addImage("img/Lasers/laserBlue01.png");
 Assets.addImage("img/Lasers/laserRed08.png");
+Assets.addImage("img/Lasers/laserRed09.png");
 Assets.addImage("img/Lasers/laserRed10.png");
 Assets.addImage("img/Lasers/laserRed11.png");
 

@@ -63,7 +63,7 @@ class Entity {
 	}
 	
 	shoot(){
-		if(this.currentCooldown <= 0){
+		if(this.currentCooldown <= 0 && (!this.enemy || (this.y < -200 && this.y > -1500))){
 			for(var i = 0; i < this.shotOrigins.length; i++){
 				var shot = new Entity(this.shotPrototype, this.x + this.shotOrigins[i].position.x, this.y + this.shotOrigins[i].position.y);
 				var movingVec = rotateVec({
@@ -73,6 +73,9 @@ class Entity {
 				movingVec.x += this.movingDirection.x*this.speed/shot.speed;
 				movingVec.y += this.movingDirection.y*this.speed/shot.speed;
 				shot.movingDirection = movingVec;
+				
+				if(typeof(this.shotOrigins[i].angle) != "undefined")
+					shot.angle = this.angle + this.shotOrigins[i].angle;
 
 				if(this.enemy)
 					this.game.entities.enemyShots.push(shot);

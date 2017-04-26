@@ -5,12 +5,11 @@ var EntityPresets = {
 		obj.create(x, y);
 		return obj;
 	},
-	playerShip1_blue: {
+	playerShip: {
 		__proto__: Entity.prototype,
 		enemy: false,
 		speed: 12,
 		cooldown: 10,
-		texture: Assets.images["img/playerShip1_blue.png"],
 		damageTextures: [
 			Assets.images["img/Damage/playerShip1_damage1.png"],
 			Assets.images["img/Damage/playerShip1_damage2.png"],
@@ -38,7 +37,7 @@ var EntityPresets = {
 		enemy: true,
 		speed: 5,
 		texture: Assets.images["img/Enemies/enemyBlack1.png"],
-		radiusSquared: 1000,
+		radiusSquared: 1600,
 		shotOrigins: [{
 			position: {x: 0, y: 0}, 
 			direction: {x: 0, y: 1}
@@ -66,7 +65,7 @@ var EntityPresets = {
 		enemy: true,
 		speed: 5,
 		texture: Assets.images["img/Enemies/enemyBlack2.png"],
-		radiusSquared: 1000,
+		radiusSquared: 1400,
 		shotOrigins: [{
 			position: {x: 0, y: 0}, 
 			direction: {x: 0, y: 1}
@@ -105,7 +104,7 @@ var EntityPresets = {
 		enemy: true,
 		speed: 8,
 		texture: Assets.images["img/Enemies/enemyBlack3.png"],
-		radiusSquared: 1000,
+		radiusSquared: 1800,
 		shotOrigins: [{
 			position: {x: 0, y: 0}, 
 			direction: {x: 0, y: 1}
@@ -143,7 +142,7 @@ var EntityPresets = {
 		enemy: true,
 		speed: 5,
 		texture: Assets.images["img/Enemies/enemyBlack4.png"],
-		radiusSquared: 1000,
+		radiusSquared: 1500,
 		shotOrigins: [
 			{
 				position: {x: 0, y: 0}, 
@@ -180,9 +179,51 @@ var EntityPresets = {
 				this.movingFunctionDirection = -1;
 			//this.move(this.movingFunctionDirection, 0.5);
 			this.movingDirection = {x: this.movingFunctionDirection, y: 0.5};
-			if(this.x*this.x <= this.radiusSquared)
+			if((this.x-150)*(this.x-150) <= this.radiusSquared)
 				this.movingFunctionDirection = 1;
-			if((this.x-1000)*(this.x-1000) <= this.radiusSquared)
+			if((this.x-850)*(this.x-850) <= this.radiusSquared)
+				this.movingFunctionDirection = -1;
+		}
+	},
+	enemyBlack5: {
+		__proto__: Entity.prototype,
+		enemy: true,
+		speed: 5,
+		texture: Assets.images["img/Enemies/enemyBlack5.png"],
+		radiusSquared: 1600,
+		shotOrigins: [{
+			position: {x: 0, y: 0}, 
+			direction: {x: 0, y: 1}
+		}],
+		shotPrototype: {
+			__proto__: Entity.prototype,
+			speed: 16,
+			texture: Assets.images["img/Lasers/laserRed09.png"],
+			radiusSquared: 100,
+			moveFunction: function(){
+				if(typeof(this.time) == "undefined"){
+					this.time = 0;
+					this.movingDirection = rotateVec({x: 1, y: 0}, Math.random()*Math.PI);
+					this.rotatingSpeed = 0.1;
+				}
+				this.time++;
+				if(this.time == 20){
+					this.movingDirection = {x: game.playerShip.x - this.x, y: game.playerShip.y - this.y};
+					var length = Math.sqrt(this.movingDirection.x*this.movingDirection.x + this.movingDirection.y*this.movingDirection.y);
+					this.movingDirection.x /= length;
+					this.movingDirection.y /= length;
+					this.rotatingSpeed = 0.7;
+				}
+			}
+		},
+		cooldown: 30,
+		moveFunction: function(){
+			if(typeof(this.movingFunctionDirection) == "undefined")
+				this.movingFunctionDirection = -1;
+			this.movingDirection = {x: this.movingFunctionDirection*2, y: 0.5}
+			if((this.x-200)*(this.x-200) <= this.radiusSquared)
+				this.movingFunctionDirection = 1;
+			if((this.x-800)*(this.x-800) <= this.radiusSquared)
 				this.movingFunctionDirection = -1;
 		}
 	},
@@ -190,7 +231,7 @@ var EntityPresets = {
 		__proto__: Meteor.prototype,
 		speed: 5,
 		texture: Assets.images["img/Meteors/meteorBrown_big1.png"],
-		radiusSquared: 1000,
+		radiusSquared: 1600,
 		numberOfSubMeteors: 5,
 		subMeteors: [
 			{

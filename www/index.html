@@ -8,18 +8,61 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<script type="text/javascript" src="js/jquery/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="js/jquery/jquery.mobile-1.4.5.min.js"></script>
+	<script type="text/javascript" src="js/jquery.touchslider.min.js"></script>
 	<script type="text/javascript" src="js/game.js"></script>
 	<script type="text/javascript" src="js/entity.js"></script>
 	<script type="text/javascript" src="js/meteor.js"></script>
 	<script type="text/javascript" src="js/enemyspawner.js"></script>
 </head>
 <body>
-	<div data-role="page" id="menu">
+	<div data-role="page" id="menu" data-theme="b">
 		<div data-role="header">
 		  <h1>Cosmic Escape</h1>
 		</div>
 		<div data-role="main" class="ui-content">
 			<a href="#game" class="ui-btn">Start</a>
+			<div class="touchslider blue" style="height: 150px">
+				<div class="touchslider-viewport" style="width:100%;overflow:hidden">
+					<div>
+						<div class="touchslider-item">
+							<div class="item" style="height: 150px">
+								<img src="img/playerShip1_blue.png" alt="Player ship 1 blue" class="blue">
+								<img src="img/playerShip1_green.png" alt="Player ship 1 green" class="green">
+								<img src="img/playerShip1_orange.png" alt="Player ship 1 orange" class="orange">
+								<img src="img/playerShip1_red.png" alt="Player ship 1 red" class="red">
+							</div>
+						</div>
+						<div class="touchslider-item">
+							<div class="item">
+								<img src="img/playerShip2_blue.png" alt="Player ship 2 blue" class="blue">
+								<img src="img/playerShip2_green.png" alt="Player ship 2 green" class="green">
+								<img src="img/playerShip2_orange.png" alt="Player ship 2 orange" class="orange">
+								<img src="img/playerShip2_red.png" alt="Player ship 2 red" class="red">
+							</div>
+						</div>
+						<div class="touchslider-item">
+							<div class="item">
+								<img src="img/playerShip3_blue.png" alt="Player ship 3 blue" class="blue">
+								<img src="img/playerShip3_green.png" alt="Player ship 3 green" class="green">
+								<img src="img/playerShip3_orange.png" alt="Player ship 3 orange" class="orange">
+								<img src="img/playerShip3_red.png" alt="Player ship 3 red" class="red">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div hidden>
+					<span class="touchslider-nav-item">1</span>
+			        <span class="touchslider-nav-item">2</span>
+			        <span class="touchslider-nav-item">3</span>
+			        <span class="touchslider-nav-item">4</span>
+				</div>
+			</div>
+			<div style="text-align: center">
+				<button class="btn-color" style="background-color: #36bbf5" onclick="change_color('blue')"></button>
+				<button class="btn-color" style="background-color: #71c937" onclick="change_color('green')"></button>
+				<button class="btn-color" style="background-color: #de532c" onclick="change_color('orange')"></button>
+				<button class="btn-color" style="background-color: #ac3939" onclick="change_color('red')"></button>
+			</div>
 			<button onclick="navigator.app.exitApp()">Quit</button>
 		</div>
 		<div data-role="footer">
@@ -28,70 +71,17 @@
 	</div>
 	<div data-role="page" id="game">
 		<canvas></canvas>
-		<script type="text/javascript" src="js/assets.js"></script>
-		<script type="text/javascript" src="js/entityPresets.js"></script>
-		<script type="text/javascript">
-			var game = new Game(document.querySelector("#game canvas"));
-			Entity.prototype.game = game;
-			
-			window.onkeydown = function(event){
-				switch(event.keyCode){
-					case 87: // Up
-						game.controls.up = true;
-						break;
-					case 83: // Down
-						game.controls.down = true;
-						break;
-					case 65: // Left
-						game.controls.left = true;
-						break;
-					case 68: // Right
-						game.controls.right = true;
-						break;
-					case 32: // Space
-						game.controls.shoot = true;
-						break;
-				}
-			}
-			
-			window.onkeyup = function(event){
-				switch(event.keyCode){
-					case 87: // Up
-						game.controls.up = false;
-						break;
-					case 83: // Down
-						game.controls.down = false;
-						break;
-					case 65: // Left
-						game.controls.left = false;
-						break;
-					case 68: // Right
-						game.controls.right = false;
-						break;
-					case 32: // Space
-						game.controls.shoot = false;
-						break;
-				}
-			}
-			
-			game.update();
-			game.draw();
-			
-			var pause = false;
-			setInterval(function(){
-				if(pause) return;
-				game.update();
-				game.draw();
-			}, 1000/30);
-		</script>
 	</div>
 	<div data-role="dialog" id="gameOver" data-overlay-theme="b">
 		<div role="main" class="ui-content">
 			<h1>Game Over</h1>
 			<p>Your ship has performed rapid unscheduled disassembly.</p>
-			<a href="#" data-role="button" data-rel="back" data-theme="b">New game</a>
-			<a href="#" data-role="button" data-rel="back" data-theme="a">Quit</a>
+			<a href="#game" data-role="button" data-theme="b">New game</a>
+			<a href="#menu" data-role="button" data-theme="a">Main menu</a>
 		</div>
 	</div>
+	<script type="text/javascript" src="js/assets.js"></script>
+	<script type="text/javascript" src="js/entityPresets.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>

@@ -27,7 +27,10 @@ class Game {
 			shoot: false
 		};
 		
-		this.playerShip = new Entity(EntityPresets.playerShip1_blue, 500, -200);
+		this.gameOver = false;
+		
+		this.playerShip = new Entity(EntityPresets.playerShip, 500, -200);
+		this.playerShip.texture = get_current_player_ship();
 		this.playerShip.hp = 4;
 		this.playerShip.draw = function(ctx){
 			ctx.drawImage(this.texture, this.x - this.texture.width/2, this.y - this.texture.height/2);
@@ -35,6 +38,8 @@ class Game {
 				ctx.drawImage(this.damageTextures[3-this.hp], this.x - this.damageTextures[3-this.hp].width/2, this.y - this.damageTextures[3-this.hp].height/2);
 			}
 		}
+		
+		EnemySpawner.setDifficulty(0);
 		
 		//this.entities.enemies.push(new Entity(EntityPresets.enemyBlack3, 500, -1500));
 		//this.entities.enemies.push(new Meteor(EntityPresets.meteorBrown_big1, 500, -1500));
@@ -103,6 +108,8 @@ class Game {
 	}
 	
 	update(){
+		EnemySpawner.spawn(this);
+	
 		// Background offset
 		this.starsOffset[0] += 0.005;
 		this.starsOffset[1] += 0.004;
@@ -124,12 +131,17 @@ class Game {
 			this.playerShip.shoot();
 				
 		// Entities update
-		this.playerShip.update();
+		if(this.playerShip)
+			this.playerShip.update();
 		for(var e in this.entities){
 			var entities = this.entities[e];
 			for(var i = 0; i < entities.length; i++){
 				entities[i].update();
-				if(entities[i].destroy || entities[i].x < -100 || entities[i].x > 1100 || entities[i].y > 100 || entities[i].y < -2500){
+				if(
+					entities[i].destroy || 
+					entities[i].x < -100 || entities[i].x > 1100 || entities[i].y > 60 || entities[i].y < -3000 ||
+					(e == "playerShots" && entities[i].y < -1500)
+				){
 					entities.splice(i, 1);
 					i--;
 				}
@@ -138,35 +150,42 @@ class Game {
 		
 		// Collision
 		// Player - Enemies
-		for(var i = 0; i < this.entities.enemies.length; i++){
-			if(this.playerShip.collision(this.entities.enemies[i])){
-				if(this.playerShip.hp > 0)
-					this.playerShip.hp--;
-				this.entities.enemies[i].destroy = true;
-					if(this.entities.enemies[i].onDestroy)
-						this.entities.enemies[i].onDestroy();
-			}
-			// Player shots - Enemies
-			for(var j = 0; j < this.entities.playerShots.length; j++){
-				if(this.entities.playerShots[j].collision(this.entities.enemies[i])){
+		if(this.playerShip)
+			for(var i = 0; i < this.entities.enemies.length; i++){
+				if(this.playerShip.collision(this.entities.enemies[i])){
+					if(this.playerShip.hp > 0)
+						this.playerShip.hp--;
 					this.entities.enemies[i].destroy = true;
-					if(this.entities.enemies[i].onDestroy)
-						this.entities.enemies[i].onDestroy();
-					this.entities.playerShots[j].destroy = true;
-					if(this.entities.playerShots[j].onDestroy)
-						this.entities.playerShots[j].onDestroy();
+						if(this.entities.enemies[i].onDestroy)
+							this.entities.enemies[i].onDestroy();
+				}
+				// Player shots - Enemies
+				for(var j = 0; j < this.entities.playerShots.length; j++){
+					if(this.entities.playerShots[j].collision(this.entities.enemies[i])){
+						this.entities.enemies[i].destroy = true;
+						if(this.entities.enemies[i].onDestroy)
+							this.entities.enemies[i].onDestroy();
+						this.entities.playerShots[j].destroy = true;
+						if(this.entities.playerShots[j].onDestroy)
+							this.entities.playerShots[j].onDestroy();
+					}
 				}
 			}
-		}
 		// Player - Enemy shots
-		for(var i = 0; i < this.entities.enemyShots.length; i++){
-			if(this.playerShip.collision(this.entities.enemyShots[i])){
-				this.entities.enemyShots[i].destroy = true;
-				if(this.entities.enemyShots[i].onDestroy)
-					this.entities.enemyShots[i].onDestroy();
-				if(this.playerShip.hp > 0)
-					this.playerShip.hp--;
+		if(this.playerShip)
+			for(var i = 0; i < this.entities.enemyShots.length; i++){
+				if(this.playerShip.collision(this.entities.enemyShots[i])){
+					this.entities.enemyShots[i].destroy = true;
+					if(this.entities.enemyShots[i].onDestroy)
+						this.entities.enemyShots[i].onDestroy();
+					if(this.playerShip.hp > 0)
+						this.playerShip.hp--;
+				}
 			}
+		
+		if(!this.gameOver && this.playerShip.hp <= 0){
+			game_over();
+			this.gameOver = true;
 		}
 	}
 }

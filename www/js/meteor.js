@@ -9,7 +9,7 @@ class Meteor extends Entity {
 		for(var i = 0; i < this.numberOfSubMeteors; i++){
 			var meteorType = Math.floor(Math.random() * this.subMeteors.length);
 			var m = new Meteor(this.subMeteors[meteorType] , this.x, this.y);
-			m.movingDirection = rotateVec({x: 0, y: 1}, i*anglePart);
+			m.movingDirection = rotateVec({x: 0, y: 1}, i*anglePart + (Math.random()*0.4 - 0.2));
 			m.move(m.movingDirection.x, m.movingDirection.y);
 			game.entities.enemies.push(m);
 		}
