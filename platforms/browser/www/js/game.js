@@ -184,11 +184,11 @@ Game.prototype = {
 						this.playerShip.hp--;
 				}
 			}
-		
-		if(!this.gameOver && this.playerShip.hp <= 0){
-			game_over();
-			this.gameOver = true;
-		}
+		if(this.playerShip != null)
+			if(!this.gameOver && this.playerShip.hp <= 0){
+				game_over();
+				this.gameOver = true;
+			}
 	}
 };
 

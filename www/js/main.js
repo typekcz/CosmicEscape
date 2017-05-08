@@ -22,12 +22,6 @@ function get_current_player_ship_damage_textures(){
 change_color(localStorage.getItem("color") || "blue");
 //$(".touchslider-nav-item")[parseInt(localStorage.getItem("ship")) + 1].classList.add("touchslider-nav-item-current");
 
-window.onload = function(){
-    $(".touchslider").touchSlider({});
-  	
-	$(".touchslider").data("touchslider").step(parseInt(localStorage.getItem("ship")), false);
-}
-
 // JQuery Mobile transparent dialog
 $(document).on('pagebeforeshow', 'div[data-role="dialog"]', function (e, ui) {
     ui.prevPage.addClass("ui-dialog-background ");
@@ -46,10 +40,11 @@ window.onbeforeunload = function(){
 ////////////////
 
 function game_over(){
+	Assets.sounds["sfx/spaceTrash4.mp3"].play();
 	$.mobile.changePage('#gameOver',{transition:'pop', role:'dialog'});
 	game.playerShip = null;
 	
-	Assets.sounds["sfx/Orbital Colossus.mp3"].stop();
+	Assets.sounds["sfx/orbital_colossus.mp3"].pause();
 }
 
 var pause = true;
@@ -64,8 +59,8 @@ function game_start(){
 	game.draw();
 	pause = false;
 	
-	Assets.sounds["sfx/Orbital Colossus.mp3"].currentTime = 0;
-	Assets.sounds["sfx/Orbital Colossus.mp3"].play();
+	Assets.sounds["sfx/orbital_colossus.mp3"].currentTime = 0;
+	Assets.sounds["sfx/orbital_colossus.mp3"].play();
 }
 
 $("#game").on("pagebeforeshow", function(e){
@@ -74,7 +69,7 @@ $("#game").on("pagebeforeshow", function(e){
 
 $("#menu").on("pageshow", function(e){
 	pause = true;
-	Assets.sounds["sfx/Orbital Colossus.mp3"].pause();
+	Assets.sounds["sfx/orbital_colossus.mp3"].pause();
 });
 
 window.onkeydown = function(event){
@@ -138,6 +133,8 @@ setInterval(function(){
 
 var accWatch = {
 	onSuccess: function(acceleration) {
+		if(game == null)
+			return;
 		var angle = Math.atan2(acceleration.y, acceleration.x);
 		angle -= Math.PI/2;
 		game.controls.left = game.controls.right = false;
@@ -152,8 +149,25 @@ var accWatch = {
 	options: { frequency: 1000/30 },
 	id: null
 };
-document.addEventListener("deviceready", onDeviceReady, false);
+
 function onDeviceReady() {
 	accWatch.id = navigator.accelerometer.watchAcceleration(accWatch.onSuccess, accWatch.onError, accWatch.options);
+	
+	document.addEventListener("backbutton", function(){
+		var page = $.mobile.activePage.attr('id');
+		if(page == "menu")
+			navigator.app.exitApp();
+		else if(page = game){
+			$.mobile.changePage('#menu',{transition:'pop', role:'dialog'});
+		}
+			
+	}, false);
 }
 
+window.onload = function(){
+    $(".touchslider").touchSlider({});
+  	
+	$(".touchslider").data("touchslider").step(parseInt(localStorage.getItem("ship")), false);
+	
+	document.addEventListener("deviceready", onDeviceReady, false);
+}

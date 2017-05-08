@@ -57,18 +57,10 @@ Assets.addImage("img/Damage/playerShip3_damage1.png");
 Assets.addImage("img/Damage/playerShip3_damage2.png");
 Assets.addImage("img/Damage/playerShip3_damage3.png");
 
-
-Assets.addSound("sfx/laser1.mp3");
-Assets.addSound("sfx/laser2.mp3");
-Assets.addSound("sfx/laser3.mp3");
 Assets.addSound("sfx/laser4.mp3");
-Assets.addSound("sfx/laser5.mp3");
-Assets.addSound("sfx/laser6.mp3");
-Assets.addSound("sfx/laser7.mp3");
-Assets.addSound("sfx/laser8.mp3");
-Assets.addSound("sfx/laser9.mp3");
+Assets.addSound("sfx/spaceTrash4.mp3");
 
-Assets.addSound("sfx/Orbital Colossus.mp3");
-Assets.sounds["sfx/Orbital Colossus.mp3"].volume = 0.5;
-Assets.sounds["sfx/Orbital Colossus.mp3"].loop = true;
+Assets.addSound("sfx/orbital_colossus.mp3");
+Assets.sounds["sfx/orbital_colossus.mp3"].volume = 0.5;
+Assets.sounds["sfx/orbital_colossus.mp3"].loop = true;
 
