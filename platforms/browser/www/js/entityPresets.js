@@ -7,15 +7,12 @@ var EntityPresets = {
 	},
 	playerShip: {
 		__proto__: Entity.prototype,
+		texture: null,
 		enemy: false,
 		speed: 12,
-		cooldown: 10,
-		damageTextures: [
-			Assets.images["img/Damage/playerShip1_damage1.png"],
-			Assets.images["img/Damage/playerShip1_damage2.png"],
-			Assets.images["img/Damage/playerShip1_damage3.png"]
-		],
+		cooldown: 16,
 		radiusSquared: 1000,
+		shotSound: Assets.sounds["sfx/laser4.mp3"],
 		shotOrigins: [
 			{
 				position: {x: -42, y: 0}, 
@@ -208,10 +205,14 @@ var EntityPresets = {
 				}
 				this.time++;
 				if(this.time == 20){
-					this.movingDirection = {x: game.playerShip.x - this.x, y: game.playerShip.y - this.y};
-					var length = Math.sqrt(this.movingDirection.x*this.movingDirection.x + this.movingDirection.y*this.movingDirection.y);
-					this.movingDirection.x /= length;
-					this.movingDirection.y /= length;
+					if(game.playerShip){
+						this.movingDirection = {x: game.playerShip.x - this.x, y: game.playerShip.y - this.y};
+						var length = Math.sqrt(this.movingDirection.x*this.movingDirection.x + this.movingDirection.y*this.movingDirection.y);
+						this.movingDirection.x /= length;
+						this.movingDirection.y /= length;
+					} else {
+						this.movingDirection = {x: 0, y: 1};
+					}
 					this.rotatingSpeed = 0.7;
 				}
 			}
@@ -227,23 +228,49 @@ var EntityPresets = {
 				this.movingFunctionDirection = -1;
 		}
 	},
-	meteorBrown_big1: {
+	meteorBrown_big: {
 		__proto__: Meteor.prototype,
 		speed: 5,
-		texture: Assets.images["img/Meteors/meteorBrown_big1.png"],
+		textures: [
+			Assets.images["img/Meteors/meteorBrown_big1.png"],
+			Assets.images["img/Meteors/meteorBrown_big2.png"],
+			Assets.images["img/Meteors/meteorBrown_big3.png"],
+			Assets.images["img/Meteors/meteorBrown_big4.png"]
+		],
 		radiusSquared: 1600,
 		numberOfSubMeteors: 5,
 		subMeteors: [
 			{
 				__proto__: Meteor.prototype,
 				speed: 7,
-				texture: Assets.images["img/Meteors/meteorBrown_med1.png"],
+				textures: [
+					Assets.images["img/Meteors/meteorBrown_med1.png"],
+					Assets.images["img/Meteors/meteorBrown_med3.png"]
+				],
 				radiusSquared: 300,
 				numberOfSubMeteors: 0
-			}, {
+			}
+		]
+	},
+	meteorGrey_big: {
+		__proto__: Meteor.prototype,
+		speed: 5,
+		textures: [
+			Assets.images["img/Meteors/meteorGrey_big1.png"],
+			Assets.images["img/Meteors/meteorGrey_big2.png"],
+			Assets.images["img/Meteors/meteorGrey_big3.png"],
+			Assets.images["img/Meteors/meteorGrey_big4.png"]
+		],
+		radiusSquared: 1600,
+		numberOfSubMeteors: 5,
+		subMeteors: [
+			{
 				__proto__: Meteor.prototype,
 				speed: 7,
-				texture: Assets.images["img/Meteors/meteorBrown_med3.png"],
+				textures: [
+					Assets.images["img/Meteors/meteorGrey_med1.png"],
+					Assets.images["img/Meteors/meteorGrey_med2.png"]
+				],
 				radiusSquared: 300,
 				numberOfSubMeteors: 0
 			}

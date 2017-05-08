@@ -68,3 +68,7 @@ Assets.addSound("sfx/laser7.mp3");
 Assets.addSound("sfx/laser8.mp3");
 Assets.addSound("sfx/laser9.mp3");
 
+Assets.addSound("sfx/Orbital Colossus.mp3");
+Assets.sounds["sfx/Orbital Colossus.mp3"].volume = 0.5;
+Assets.sounds["sfx/Orbital Colossus.mp3"].loop = true;
+

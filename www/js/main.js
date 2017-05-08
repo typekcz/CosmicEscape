@@ -22,11 +22,11 @@ function get_current_player_ship_damage_textures(){
 change_color(localStorage.getItem("color") || "blue");
 //$(".touchslider-nav-item")[parseInt(localStorage.getItem("ship")) + 1].classList.add("touchslider-nav-item-current");
 
-jQuery(function($) {
+window.onload = function(){
     $(".touchslider").touchSlider({});
   	
 	$(".touchslider").data("touchslider").step(parseInt(localStorage.getItem("ship")), false);
-});
+}
 
 // JQuery Mobile transparent dialog
 $(document).on('pagebeforeshow', 'div[data-role="dialog"]', function (e, ui) {
@@ -48,6 +48,8 @@ window.onbeforeunload = function(){
 function game_over(){
 	$.mobile.changePage('#gameOver',{transition:'pop', role:'dialog'});
 	game.playerShip = null;
+	
+	Assets.sounds["sfx/Orbital Colossus.mp3"].stop();
 }
 
 var pause = true;
@@ -61,6 +63,9 @@ function game_start(){
 	
 	game.draw();
 	pause = false;
+	
+	Assets.sounds["sfx/Orbital Colossus.mp3"].currentTime = 0;
+	Assets.sounds["sfx/Orbital Colossus.mp3"].play();
 }
 
 $("#game").on("pagebeforeshow", function(e){
@@ -69,6 +74,7 @@ $("#game").on("pagebeforeshow", function(e){
 
 $("#menu").on("pageshow", function(e){
 	pause = true;
+	Assets.sounds["sfx/Orbital Colossus.mp3"].pause();
 });
 
 window.onkeydown = function(event){
