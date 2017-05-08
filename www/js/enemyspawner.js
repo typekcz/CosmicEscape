@@ -4,7 +4,7 @@ var EnemySpawner = {
 			var e = new Entity(EntityPresets.enemyBlack1, 500+i*100, -2000-i*100);
 			game.entities.enemies.push(e);
 		}
-		return 40;
+		return 180;
 	},
 	circlingFleet1: function(game){
 		for(var i = 0; i < 5; i++){
@@ -13,7 +13,7 @@ var EnemySpawner = {
 			e.movingFunctionAngle = -i*0.2;
 			game.entities.enemies.push(e);
 		}
-		return 70;
+		return 200;
 	},
 	circlingFleet2: function(game){
 		var rand = Math.round(Math.random()*4);
@@ -24,12 +24,12 @@ var EnemySpawner = {
 			e.movingDirection.y = 1;
 			game.entities.enemies.push(e);
 		}
-		return 70;
+		return 200;
 	},
 	meteor: function(game){
 		var angle = (Math.random()-0.5)*Math.PI*0.5;
 		
-		var e = new Meteor(EntityPresets.meteorBrown_big1, Math.random()*600+200, -2000);
+		var e = new Meteor((Math.round(Math.random()))? EntityPresets.meteorBrown_big : EntityPresets.meteorGrey_big, Math.random()*600+200, -2000);
 		e.movingDirection = rotateVec({x: 0, y: Math.random()*0.4+0.8}, angle);
 		
 		game.entities.enemies.push(e);
@@ -37,20 +37,20 @@ var EnemySpawner = {
 	},
 	enemy4: function(game){
 		game.entities.enemies.push(new Entity(EntityPresets.enemyBlack4, Math.random()*400+300, -2000));
-		return 10;
+		return 100;
 	},
 	enemy5: function(game){
 		game.entities.enemies.push(new Entity(EntityPresets.enemyBlack5, Math.random()*400+300, -2000));
-		return 10;
+		return 100;
 	},
 	
 	difficulties: [
 		{
 			spawns: [
-				{ func: "slidingFleet1",			chance: 5 },
+				{ func: "slidingFleet1",		chance: 5 },
 				{ func: "circlingFleet1",		chance: 4 },
 				{ func: "circlingFleet2",		chance: 4 },
-				{ func: "meteor",				chance: 7 },
+				{ func: "meteor",				chance: 20 },
 				{ func: "enemy4",				chance: 3 },
 				{ func: "enemy5",				chance: 3 }
 			],

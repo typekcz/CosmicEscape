@@ -7,7 +7,16 @@ function change_color(color){
 }
 
 function get_current_player_ship(){
-	return $(".touchslider-item:nth-child("+($(".touchslider").data("touchslider").current+1)+") img."+current_color)[0];
+	return document.getElementsByClassName("touchslider-item")[$(".touchslider").data("touchslider").current].getElementsByClassName(current_color)[0];
+//	return $(".touchslider-item")[$(".touchslider").data("touchslider").current+1]."+current_color)[0];
+}
+
+function get_current_player_ship_damage_textures(){
+	return [
+		Assets.images["img/Damage/playerShip"+($(".touchslider").data("touchslider").current+1)+"_damage1.png"],
+		Assets.images["img/Damage/playerShip"+($(".touchslider").data("touchslider").current+1)+"_damage2.png"],
+		Assets.images["img/Damage/playerShip"+($(".touchslider").data("touchslider").current+1)+"_damage3.png"]
+	];
 }
 
 change_color(localStorage.getItem("color") || "blue");
@@ -58,7 +67,7 @@ $("#game").on("pagebeforeshow", function(e){
 	game_start();
 });
 
-$("#menu").on("pageaftershow", function(e){
+$("#menu").on("pageshow", function(e){
 	pause = true;
 });
 
@@ -141,3 +150,4 @@ document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady() {
 	accWatch.id = navigator.accelerometer.watchAcceleration(accWatch.onSuccess, accWatch.onError, accWatch.options);
 }
+
